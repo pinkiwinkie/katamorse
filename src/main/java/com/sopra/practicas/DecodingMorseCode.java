@@ -4,34 +4,54 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-
-import javax.swing.RowFilter.Entry;
+import java.util.Map.Entry;
 
 public class DecodingMorseCode {
 
   static DictionaryCodeMorse dcm = new DictionaryCodeMorse();
-  Set<Integer> myDictionary = dcm.keySet();
 
   public static String get(String morseCode) {
     return morseCode.isEmpty() ? "" : getDecodeLetter(morseCode);
   }
 
-  public static String decodeWord(String codedWord, int index, String currentLetter){
-    if (codedWord.length() == 1) {
-      return getDecodeLetter(codedWord);
-    } else {
-      for (int i = 0; i < codedWord.length(); i++) {
-        String code = codedWord.substring(index, i);
-        for(Entry<String, Integer> entry : dcm.entrySet()){
-          
+  public static String getDecodeLetter(String morseCode) {
+    return DictionaryCodeMorse.get(morseCode);
+  }
+
+  public static List<String> decodeMorse(String morseSequence) {
+    List<String> decodedSentences = new ArrayList<>();
+    recursiveSearch(morseSequence, "", decodedSentences);
+    return decodedSentences;
+  }
+
+  private static void recursiveSearch(String morseSequence, String currentWord, List<String> decodedSentences) {
+    if (morseSequence.isEmpty()) {
+      decodedSentences.add(currentWord.trim());
+      return;
+    }
+
+    for (int i = 1; i <= morseSequence.length(); i++) {
+      String prefix = morseSequence.substring(0, i);
+      if (DictionaryCodeMorse.getMap().containsValue(prefix)) {
+        for (char c : DictionaryCodeMorse.getMap().keySet()) {
+          if (DictionaryCodeMorse.getMap().get(c).equals(prefix)) {
+            recursiveSearch(morseSequence.substring(i), currentWord + c, decodedSentences);
+          }
         }
       }
     }
-    
-    return "";
-  }
-
-  public static String getDecodeLetter(String morseCode){
-    return DictionaryCodeMorse.get(morseCode);
   }
 }
+
+
+/* for (int i = 1; i <= morseSequence.length(); i++) {
+  String prefix = morseSequence.substring(0, i);
+  if (DictionaryCodeMorse.getMap().containsValue(prefix)) {
+    for (Map.Entry<Character,String> entry: DictionaryCodeMorse.getMap().entrySet()) {
+      if (entry.getValue().equals(prefix)) {
+        recursiveSearch(morseSequence.substring(i), currentWord + entry.getKey(), decodedSentences);
+      }
+      System.out.println(currentWord);
+    }
+  }
+}  */
