@@ -24,21 +24,25 @@ public class DecodingMorseCode {
   }
 
   private void recursiveSearch(String morseSequence, String currentWord, List<String> decodedSentences) {
+    System.out.println("morseSequence: " + morseSequence + ", currentWord: " + currentWord);
     if (morseSequence.isEmpty()) {
-      decodedSentences.add(currentWord.trim());
+      System.out.println("Word found: " + currentWord.trim());
+      if (wordList.contains(currentWord.trim().toLowerCase())) {
+        decodedSentences.add(currentWord.trim());
+      }
       return;
     }
-
     for (int i = 1; i <= morseSequence.length(); i++) {
       String prefix = morseSequence.substring(0, i);
+      System.out.println("Checking prefix: " + prefix);
       if (dcm.getMap().containsValue(prefix)) {
         for (char c : dcm.getMap().keySet()) {
           if (dcm.getMap().get(c).equals(prefix)) {
-            recursiveSearch(morseSequence.substring(i), currentWord + c, decodedSentences);
+            System.out.println("Match found: " + c);
+            recursiveSearch(morseSequence.substring(i), currentWord + Character.toLowerCase(c), decodedSentences);
           }
         }
       }
     }
   }
-
 }
