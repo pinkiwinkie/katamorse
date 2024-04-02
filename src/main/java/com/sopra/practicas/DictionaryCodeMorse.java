@@ -3,12 +3,12 @@ package com.sopra.practicas;
 import java.util.Map;
 
 public class DictionaryCodeMorse {
-  public static Map<Character, String> getMap() {
+  public Map<Character, String> getMap() {
     ReadFiles readFiles = new ReadFiles();
     return readFiles.readDictionary();
   }
 
-  public static String get(String morseCode) {
+  public String get(String morseCode) {
     try {
       for (Map.Entry<Character, String> entry : getMap().entrySet()) {
         if (entry.getValue().equals(morseCode)) {
@@ -19,5 +19,10 @@ public class DictionaryCodeMorse {
     } catch (Exception codeNotFound) {
       return "?";
     }
+  }
+
+  public String getCode(char letter) {
+    Character character = Character.toLowerCase(letter);
+    return getMap().getOrDefault(character, "");
   }
 }

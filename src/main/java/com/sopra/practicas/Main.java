@@ -2,6 +2,7 @@ package com.sopra.practicas;
 
 public class Main {
   public static void main(String[] args) {
-    System.out.println(DecodingMorseCode.decodeMorse("-...--"));
+    DecodingMorseCode decodingMorseCode = new DecodingMorseCode();
+    System.out.println(decodingMorseCode.decodeMorse("-.-...-...------..-."));
   }
 }
