@@ -44,7 +44,7 @@ public class ReadFiles {
       while ((line = buffer.readLine()) != null) {
         String[] parts = line.split(":");
         if (parts.length == 2) {
-          char key = parts[0].charAt(0);
+          char key = Character.toLowerCase(parts[0].charAt(0));
           String value = parts[1];
 
           morseDictionary.put(key, value);

@@ -5,8 +5,9 @@ import org.junit.Test;
 import com.sopra.practicas.DecodingMorseCode;
 
 public class TestDecodingMorse {
-  @Test
+  DecodingMorseCode decodingMorseCode = new DecodingMorseCode();
+ /*  @Test
   public void testToProveThatReturnsE() {
-    //assertEquals(DecodingMorseCode.getDecodeLetter("."), "E");
-  }
+    assertEquals(decodingMorseCode.getDecodeLetter("."), "E");
+  } */
 }

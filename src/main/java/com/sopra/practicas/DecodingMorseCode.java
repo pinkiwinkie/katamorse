@@ -2,46 +2,28 @@ package com.sopra.practicas;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class DecodingMorseCode {
+  private Map<String, String> wordToMorseMap = new CodingWordsOfFile().getWordToMorseMap();
 
-  DictionaryCodeMorse dcm = new DictionaryCodeMorse();
-  ReadFiles readFiles = new ReadFiles();
-  List<String> wordList = readFiles.readWordsFromFile();
-
-  public String get(String morseCode) {
-    return morseCode.isEmpty() ? "" : getDecodeLetter(morseCode);
+  public List<String> decodeMorsePhrase(String morsePhrase) {
+    List<String> decodedPhrases = new ArrayList<>();
+    recursiveDecode(morsePhrase, "", decodedPhrases);
+    return decodedPhrases;
   }
 
-  public String getDecodeLetter(String morseCode) {
-    return dcm.get(morseCode);
-  }
-
-  public List<String> decodeMorse(String morseSequence) {
-    List<String> decodedSentences = new ArrayList<>();
-    recursiveSearch(morseSequence, "", decodedSentences);
-    return decodedSentences;
-  }
-
-  private void recursiveSearch(String morseSequence, String currentWord, List<String> decodedSentences) {
-    System.out.println("morseSequence: " + morseSequence + ", currentWord: " + currentWord);
-    if (morseSequence.isEmpty()) {
-      System.out.println("Word found: " + currentWord.trim());
-      if (wordList.contains(currentWord.trim().toLowerCase())) {
-        decodedSentences.add(currentWord.trim());
-      }
+  private void recursiveDecode(String morsePhrase, String currentPhrase, List<String> decodedPhrases) {
+    if (morsePhrase.isEmpty()) {
+      decodedPhrases.add(currentPhrase.trim());
       return;
     }
-    for (int i = 1; i <= morseSequence.length(); i++) {
-      String prefix = morseSequence.substring(0, i);
-      System.out.println("Checking prefix: " + prefix);
-      if (dcm.getMap().containsValue(prefix)) {
-        for (char c : dcm.getMap().keySet()) {
-          if (dcm.getMap().get(c).equals(prefix)) {
-            System.out.println("Match found: " + c);
-            recursiveSearch(morseSequence.substring(i), currentWord + Character.toLowerCase(c), decodedSentences);
-          }
-        }
+
+    for (Map.Entry<String, String> entry : wordToMorseMap.entrySet()) {
+      String word = entry.getKey();
+      String morseWord = entry.getValue();
+      if (morsePhrase.startsWith(morseWord)) {
+        recursiveDecode(morsePhrase.substring(morseWord.length()), currentPhrase + word + " ", decodedPhrases);
       }
     }
   }
